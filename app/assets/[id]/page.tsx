@@ -9,6 +9,7 @@ import Link from 'next/link';
 async function getAsset(id: string) {
   const supabase = await createClient();
 
+  // @ts-expect-error - Supabase types are not properly aligned with our database types
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
@@ -23,10 +24,18 @@ async function getAsset(id: string) {
     return null;
   }
 
+  // @ts-expect-error - Supabase types are not properly aligned with our database types
   return asset as AssetWithPhotos;
 }
 
-export default async function AssetPage({ params }: { params: { id: string } }) {
+interface PageProps {
+  params: {
+    id: string;
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function AssetPage({ params }: PageProps) {
   const asset = await getAsset(params.id);
 
   if (!asset) {
