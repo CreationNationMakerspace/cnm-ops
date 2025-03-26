@@ -14,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 async function getUserName() {
-  const cookieStore = cookies();
   const supabase = await createClient();
   
   const { data: { session }, error } = await supabase.auth.getSession();

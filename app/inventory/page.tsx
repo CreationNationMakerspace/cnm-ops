@@ -4,8 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { InventoryItemWithPhotos, InventoryStatus } from '@/types/database';
-import { InventoryList } from '@/components/inventory/InventoryList';
-import { Suspense } from 'react';
 
 function getStatusColor(status: InventoryStatus) {
   switch (status) {
