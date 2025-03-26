@@ -4,7 +4,6 @@ import "./globals.css";
 import Link from "next/link";
 import { AuthProvider } from '@/components/providers/AuthProvider';
 import { createClient } from '@/lib/supabase/server';
-import { cookies } from 'next/headers';
 
 const inter = Inter({ subsets: ["latin"] });
 
