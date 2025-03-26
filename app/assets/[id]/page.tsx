@@ -28,13 +28,11 @@ async function getAsset(id: string) {
   return asset as AssetWithPhotos;
 }
 
-type Props = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function AssetPage({ params }: Props) {
+export default async function AssetPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const asset = await getAsset(params.id);
 
   if (!asset) {
