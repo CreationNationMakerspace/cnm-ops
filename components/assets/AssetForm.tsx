@@ -90,7 +90,7 @@ export function AssetForm({ initialData, onSubmit, isLoading }: AssetFormProps) 
     });
 
     // Add photos
-    photos.forEach((photo, index) => {
+    photos.forEach((photo) => {
       if (photo.file) {
         formDataObj.append('photos', photo.file);
         formDataObj.append('photo_captions', photo.caption);

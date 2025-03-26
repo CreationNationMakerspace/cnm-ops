@@ -1,7 +1,6 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
-import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { NewAssetPhoto } from '@/types/database';
 import { STORAGE_CONFIG, getAssetPhotoPath, validateFile } from '@/lib/supabase/storage';

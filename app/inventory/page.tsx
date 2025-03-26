@@ -3,8 +3,9 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Link from 'next/link';
 import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
-import { cookies } from 'next/headers';
 import { InventoryItemWithPhotos, InventoryStatus } from '@/types/database';
+import { InventoryList } from '@/components/inventory/InventoryList';
+import { Suspense } from 'react';
 
 function getStatusColor(status: InventoryStatus) {
   switch (status) {

@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server';
 import { AssetForm } from '@/components/assets/AssetForm';
 import { redirect } from 'next/navigation';
 import { Asset, NewAssetPhoto } from '@/types/database';
-import { cookies } from 'next/headers';
 
 export default function NewAssetPage() {
   async function handleSubmit(formData: FormData) {

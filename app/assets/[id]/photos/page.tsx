@@ -1,5 +1,4 @@
 import { createClient } from '@/lib/supabase/server';
-import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { AssetWithPhotos } from '@/types/database';
 import { Button } from '@/components/ui/Button';
