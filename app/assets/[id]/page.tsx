@@ -28,14 +28,13 @@ async function getAsset(id: string) {
   return asset as AssetWithPhotos;
 }
 
-interface PageProps {
+type Props = {
   params: {
     id: string;
   };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+};
 
-export default async function AssetPage({ params }: PageProps) {
+export default async function AssetPage({ params }: Props) {
   const asset = await getAsset(params.id);
 
   if (!asset) {
