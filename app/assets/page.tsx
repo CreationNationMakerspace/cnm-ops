@@ -1,9 +1,9 @@
-import { AssetList } from '@/components/assets/AssetList';
-import { Button } from '@/components/ui/Button';
-import { AssetWithPhotos } from '@/types/database';
-import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { AssetList } from '@/components/assets/AssetList';
+import { Button } from '@/components/ui/Button';
+import Link from 'next/link';
 import { Suspense } from 'react';
 
 function LoadingState() {
@@ -23,7 +23,6 @@ function LoadingState() {
 }
 
 async function AssetsList() {
-  const cookieStore = cookies();
   const supabase = await createClient();
 
   const { data: assets, error } = await supabase

@@ -20,7 +20,6 @@ function getStatusColor(status: InventoryStatus) {
 }
 
 async function getInventoryItems() {
-  const cookieStore = cookies();
   const supabase = await createClient();
 
   const { data: items, error } = await supabase

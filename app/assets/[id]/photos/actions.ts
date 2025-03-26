@@ -7,7 +7,6 @@ import { NewAssetPhoto } from '@/types/database';
 import { STORAGE_CONFIG, getAssetPhotoPath, validateFile } from '@/lib/supabase/storage';
 
 export async function handlePhotoUpload(formData: FormData) {
-  const cookieStore = cookies();
   const supabase = await createClient();
 
   // Get assetId from form data

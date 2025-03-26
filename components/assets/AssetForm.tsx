@@ -1,11 +1,10 @@
 'use client';
 
-import { Asset, AssetCategory, AssetStatus, MakerspaceShop, NewAssetPhoto } from '@/types/database';
+import { Asset } from '@/types/database';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import { PhotoUpload } from '@/components/ui/PhotoUpload';
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
 
 // Define the enum values as constants
 const ASSET_CATEGORIES = [
@@ -72,7 +71,6 @@ export function AssetForm({ initialData, onSubmit, isLoading }: AssetFormProps) 
   });
 
   const [photos, setPhotos] = useState<PhotoState[]>([]);
-  const supabase = createClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -8,7 +8,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 async function getAsset(id: string) {
-  const cookieStore = cookies();
   const supabase = await createClient();
 
   const { data: asset, error } = await supabase

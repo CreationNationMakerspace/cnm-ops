@@ -8,7 +8,6 @@ export default function NewAssetPage() {
   async function handleSubmit(formData: FormData) {
     'use server';
 
-    const cookieStore = cookies();
     const supabase = await createClient();
 
     // Check if user is authenticated

@@ -10,7 +10,6 @@ import { PhotoUploadForm } from '@/components/assets/PhotoUploadForm';
 import { handlePhotoUpload } from './actions';
 
 async function getAsset(id: string) {
-  const cookieStore = cookies();
   const supabase = await createClient();
 
   // Check if user is authenticated

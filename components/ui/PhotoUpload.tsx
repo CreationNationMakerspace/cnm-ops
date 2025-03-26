@@ -2,18 +2,19 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from './Button';
 
 interface PhotoUploadProps {
   onPhotoSelect: (file: File) => void;
   onCaptionChange: (caption: string) => void;
   onPrimaryChange: (isPrimary: boolean) => void;
+  caption?: string;
+  isPrimary?: boolean;
 }
 
-export function PhotoUpload({ onPhotoSelect, onCaptionChange, onPrimaryChange }: PhotoUploadProps) {
+export function PhotoUpload({ onPhotoSelect, onCaptionChange, onPrimaryChange, caption: initialCaption = '', isPrimary: initialIsPrimary = false }: PhotoUploadProps) {
   const [preview, setPreview] = useState<string | null>(null);
-  const [caption, setCaption] = useState('');
-  const [isPrimary, setIsPrimary] = useState(false);
+  const [caption, setCaption] = useState(initialCaption);
+  const [isPrimary, setIsPrimary] = useState(initialIsPrimary);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
