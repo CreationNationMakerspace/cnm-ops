@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from './Button';
 
@@ -14,6 +14,17 @@ export function PhotoUpload({ onPhotoSelect, onCaptionChange, onPrimaryChange }:
   const [preview, setPreview] = useState<string | null>(null);
   const [caption, setCaption] = useState('');
   const [isPrimary, setIsPrimary] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if device is mobile
+    const checkMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      );
+    };
+    setIsMobile(checkMobile());
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -59,10 +70,13 @@ export function PhotoUpload({ onPhotoSelect, onCaptionChange, onPrimaryChange }:
       <div className="space-y-2">
         <input
           type="file"
-          accept="image/*"
+          accept={isMobile ? "image/*;capture=camera" : "image/*"}
           onChange={handleFileChange}
           className="block w-full text-sm text-gray-900 file:mr-4 file:rounded-md file:border-0 file:bg-blue-500 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-blue-600"
         />
+        <p className="text-xs text-gray-500">
+          {isMobile ? 'Take a photo or choose from gallery' : 'Choose an image'}
+        </p>
         <input
           type="text"
           placeholder="Add a caption..."
