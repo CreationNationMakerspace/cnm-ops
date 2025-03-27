@@ -3,6 +3,7 @@ import { AssetList } from '@/components/assets/AssetList';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { AssetWithPhotos } from '@/types/database';
 
 function LoadingState() {
   return (
@@ -33,11 +34,10 @@ async function AssetsList() {
 
   if (error) {
     console.error('Error fetching assets:', error);
-    return <div>Error loading assets</div>;
+    return <AssetList assets={[]} />;
   }
 
-  // @ts-expect-error - Supabase's type system doesn't correctly infer the response type for joined queries
-  return <AssetList assets={assets || []} />;
+  return <AssetList assets={assets as unknown as AssetWithPhotos[]} />;
 }
 
 export default function AssetsPage() {
