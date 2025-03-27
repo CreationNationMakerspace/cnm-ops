@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export const dynamicParams = true;
+
 async function getAsset(id: string) {
   const supabase = await createClient();
 
