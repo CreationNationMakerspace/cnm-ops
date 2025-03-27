@@ -29,29 +29,14 @@ async function AssetsList() {
       *,
       photos:asset_photos(*)
     `)
-    .order('created_at', { ascending: false });
+    .order('name');
 
   if (error) {
     console.error('Error fetching assets:', error);
-    return (
-      <div className="rounded-lg bg-red-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800">Error loading assets</h3>
-            <div className="mt-2 text-sm text-red-700">
-              <p>There was an error loading the assets. Please try again later.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <div>Error loading assets</div>;
   }
 
+  // @ts-expect-error - Supabase's type system doesn't correctly infer the response type for joined queries
   return <AssetList assets={assets || []} />;
 }
 
