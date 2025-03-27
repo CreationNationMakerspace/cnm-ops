@@ -14,14 +14,14 @@ export const dynamic = 'force-dynamic';
 async function getAsset(id: string): Promise<AssetWithPhotos | null> {
   const supabase = await createClient();
 
-  // @ts-ignore - Supabase types are not properly aligned with our database schema
+  // @ts-expect-error - Supabase types are not properly aligned with our database schema
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
       *,
       photos:asset_photos(*)
     `)
-    .eq('id', id as any)
+    .eq('id', id as string | number)
     .single();
 
   if (error || !asset) {
@@ -29,7 +29,7 @@ async function getAsset(id: string): Promise<AssetWithPhotos | null> {
     return null;
   }
 
-  // @ts-ignore - Supabase response type needs to be cast to our AssetWithPhotos type
+  // @ts-expect-error - Supabase response type needs to be cast to our AssetWithPhotos type
   return asset;
 }
 
