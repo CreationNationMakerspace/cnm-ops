@@ -31,11 +31,11 @@ async function getInventoryItems() {
     .order('name', { ascending: true });
 
   if (error) {
-    console.error('Error fetching inventory:', error);
+    console.error('Error fetching inventory items:', error);
     return [];
   }
 
-  return items as InventoryItemWithPhotos[];
+  return items as unknown as InventoryItemWithPhotos[];
 }
 
 function ItemCard({ item }: { item: InventoryItemWithPhotos }) {
