@@ -21,7 +21,6 @@ async function getAsset(id: string): Promise<AssetWithPhotos | null> {
       *,
       photos:asset_photos(*)
     `)
-    // @ts-expect-error - Supabase's type system doesn't correctly infer the id parameter type for eq()
     .eq('id', id as string | number)
     .single();
 
