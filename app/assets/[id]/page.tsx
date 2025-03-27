@@ -1,3 +1,5 @@
+// app/assets/[id]/page.tsx
+
 import { createClient } from '@/lib/supabase/server';
 import { notFound } from 'next/navigation';
 import { AssetWithPhotos } from '@/types/database';
@@ -6,12 +8,19 @@ import { Card, CardContent, CardHeader } from '@/components/ui/Card';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export const dynamicParams = true;
+// ✅ Tells Next.js this is a dynamic route (skip static generation)
+export const dynamic = 'force-dynamic';
 
-async function getAsset(id: string) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+async function getAsset(id: string): Promise<AssetWithPhotos | null> {
   const supabase = await createClient();
 
-  // @ts-expect-error - Supabase types are not properly aligned with our database types
+  // @ts-expect-error
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
@@ -26,26 +35,16 @@ async function getAsset(id: string) {
     return null;
   }
 
-  // @ts-expect-error - Supabase types are not properly aligned with our database types
-  return asset as AssetWithPhotos;
+  // @ts-expect-error
+  return asset;
 }
 
-interface AssetPageProps {
-  params: {
-    id: string;
-  };
-}
-
-
-export default async function AssetPage({ params }: AssetPageProps) {
+export default async function AssetPage({ params }: PageProps): Promise<JSX.Element> {
   const asset = await getAsset(params.id);
+  if (!asset) notFound();
 
-  if (!asset) {
-    notFound();
-  }
-
-  const primaryPhoto = asset.photos?.find(photo => photo.is_primary) || asset.photos?.[0];
-  const otherPhotos = asset.photos?.filter(photo => photo.id !== primaryPhoto?.id) || [];
+  const primaryPhoto = asset.photos?.find((p) => p.is_primary) || asset.photos?.[0];
+  const otherPhotos = asset.photos?.filter((p) => p.id !== primaryPhoto?.id) || [];
 
   return (
     <div className="container mx-auto py-8">
