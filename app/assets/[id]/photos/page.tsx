@@ -35,8 +35,13 @@ async function getAsset(id: string) {
   return asset as AssetWithPhotos;
 }
 
-export default async function AssetPhotosPage({ params }: { params: { id: string } }) {
-  const asset = await getAsset(params.id);
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
+export default async function AssetPhotosPage({ params }: Props) {
+  const resolvedParams = await params;
+  const asset = await getAsset(resolvedParams.id);
 
   if (!asset) {
     notFound();
