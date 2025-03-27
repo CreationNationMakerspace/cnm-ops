@@ -67,7 +67,6 @@ export async function handlePhotoUpload(formData: FormData) {
 
     const { error: photoError } = await supabase
       .from('asset_photos')
-      // @ts-expect-error - Supabase's type system doesn't correctly infer the insert type for asset_photos
       .insert(photoData)
       .select()
       .single();
