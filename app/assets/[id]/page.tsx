@@ -14,7 +14,7 @@ export const dynamic = 'force-dynamic';
 async function getAsset(id: string): Promise<AssetWithPhotos | null> {
   const supabase = await createClient();
 
-  // @ts-ignore - Supabase types are not properly aligned with our database schema
+  
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
