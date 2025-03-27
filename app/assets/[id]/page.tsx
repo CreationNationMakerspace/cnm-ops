@@ -20,7 +20,7 @@ type PageProps = {
 async function getAsset(id: string): Promise<AssetWithPhotos | null> {
   const supabase = await createClient();
 
-  // @ts-expect-error
+  // @ts-expect-error - Supabase types are not properly aligned with our database schema
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
@@ -35,7 +35,7 @@ async function getAsset(id: string): Promise<AssetWithPhotos | null> {
     return null;
   }
 
-  // @ts-expect-error
+  // @ts-expect-error - Supabase response type needs to be cast to our AssetWithPhotos type
   return asset;
 }
 
