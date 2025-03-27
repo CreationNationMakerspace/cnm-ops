@@ -24,6 +24,7 @@ async function getAsset(id: string) {
       *,
       photos:asset_photos(*)
     `)
+    // @ts-expect-error - Supabase's type system doesn't correctly infer the id parameter type for eq()
     .eq('id', id)
     .single();
 
