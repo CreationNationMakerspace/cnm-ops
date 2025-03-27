@@ -11,23 +11,17 @@ import Link from 'next/link';
 // ✅ Tells Next.js this is a dynamic route (skip static generation)
 export const dynamic = 'force-dynamic';
 
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
 async function getAsset(id: string): Promise<AssetWithPhotos | null> {
   const supabase = await createClient();
 
-  // @ts-expect-error - Supabase types are not properly aligned with our database schema
+  // @ts-ignore - Supabase types are not properly aligned with our database schema
   const { data: asset, error } = await supabase
     .from('assets')
     .select(`
       *,
       photos:asset_photos(*)
     `)
-    .eq('id', id)
+    .eq('id', id as any)
     .single();
 
   if (error || !asset) {
@@ -35,11 +29,15 @@ async function getAsset(id: string): Promise<AssetWithPhotos | null> {
     return null;
   }
 
-  // @ts-expect-error - Supabase response type needs to be cast to our AssetWithPhotos type
+  // @ts-ignore - Supabase response type needs to be cast to our AssetWithPhotos type
   return asset;
 }
 
-export default async function AssetPage({ params }: PageProps): Promise<JSX.Element> {
+type Props = {
+  params: { id: string };
+};
+
+export default async function AssetPage({ params }: Props) {
   const asset = await getAsset(params.id);
   if (!asset) notFound();
 
