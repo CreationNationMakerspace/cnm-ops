@@ -428,7 +428,7 @@ export function AssetForm({ initialData, onSubmit, isLoading }: AssetFormProps) 
                   />
                   <Button
                     type="button"
-                    variant="danger"
+                    variant="default"
                     size="sm"
                     className="absolute -top-2 -right-2"
                     onClick={() => removePhoto(index)}
