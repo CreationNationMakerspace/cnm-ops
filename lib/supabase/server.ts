@@ -4,9 +4,8 @@ import { cookies } from 'next/headers';
 import { Database } from '@/types/database';
 
 export async function createClient() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
 
-  // @ts-expect-error - Supabase types are not properly aligned with Next.js server components
   return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -15,11 +14,19 @@ export async function createClient() {
         get(name: string) {
           return cookieStore.get(name)?.value;
         },
-        set(name: string, value: string, options: { path: string; maxAge: number }) {
-          // Server components cannot set cookies
+        set(name: string, value: string, options: any) {
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // Handle cookie errors in development
+          }
         },
-        remove(name: string, options: { path: string }) {
-          // Server components cannot remove cookies
+        remove(name: string, options: any) {
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch (error) {
+            // Handle cookie errors in development
+          }
         },
       },
     }
