@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { AssetForm } from '@/components/assets/AssetForm';
 import { redirect } from 'next/navigation';
 import { Asset, NewAssetPhoto } from '@/types/database';
+import { STORAGE_CONFIG, getAssetPhotoPath, validateFile } from '@/lib/supabase/storage';
 
 export default function NewAssetPage() {
   async function handleSubmit(formData: FormData) {
@@ -51,24 +52,18 @@ export default function NewAssetPage() {
 
     const { data: insertData, error } = await supabase
       .from('assets')
+      // @ts-expect-error - Supabase's type system doesn't correctly infer the insert type for assets
       .insert(assetData)
       .select()
       .single();
 
     if (error) {
       console.error('Error creating asset:', error);
-      console.error('Error details:', {
-        code: error.code,
-        message: error.message,
-        details: error.details,
-        hint: error.hint
-      });
-      
-      if (error.code === '42501') {
-        throw new Error('You do not have permission to create assets. Please contact an administrator.');
-      }
-      throw new Error(error.message);
+      throw new Error('Failed to create asset');
     }
+
+    // @ts-expect-error - Supabase's type system doesn't correctly infer the response type
+    const assetId = insertData.id;
 
     // Handle photo uploads
     const photos = formData.getAll('photos') as File[];
@@ -79,13 +74,20 @@ export default function NewAssetPage() {
       const photo = photos[i];
       if (!photo) continue;
 
+      // Validate file
+      const validation = validateFile(photo);
+      if (!validation.isValid) {
+        console.error('Invalid file:', validation.error);
+        continue;
+      }
+
       // Upload photo to Supabase Storage
       const fileExt = photo.name.split('.').pop();
-      const fileName = `${insertData.id}/${Math.random()}.${fileExt}`;
-      const filePath = `assets/${fileName}`;
+      const fileName = `${Math.random()}.${fileExt}`;
+      const filePath = getAssetPhotoPath(assetId, fileName);
 
       const { error: uploadError } = await supabase.storage
-        .from('photos')
+        .from(STORAGE_CONFIG.BUCKETS.ASSET_PHOTOS)
         .upload(filePath, photo);
 
       if (uploadError) {
@@ -95,12 +97,12 @@ export default function NewAssetPage() {
 
       // Get the public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('photos')
+        .from(STORAGE_CONFIG.BUCKETS.ASSET_PHOTOS)
         .getPublicUrl(filePath);
 
       // Create photo record
       const photoData: NewAssetPhoto = {
-        asset_id: insertData.id,
+        asset_id: assetId,
         photo_url: publicUrl,
         caption: captions[i] || null,
         is_primary: isPrimary[i] === 'true',
@@ -109,7 +111,10 @@ export default function NewAssetPage() {
 
       const { error: photoError } = await supabase
         .from('asset_photos')
-        .insert(photoData);
+        // @ts-expect-error - Supabase's type system doesn't correctly infer the insert type for asset_photos
+        .insert(photoData)
+        .select()
+        .single();
 
       if (photoError) {
         console.error('Error creating photo record:', photoError);
