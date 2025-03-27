@@ -75,7 +75,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
         </Link>
         {onEdit && (
           <Button
-            variant="secondary"
+            variant="outline"
             size="sm"
             onClick={() => onEdit(asset)}
           >
@@ -84,7 +84,7 @@ export function AssetCard({ asset, onEdit, onDelete }: AssetCardProps) {
         )}
         {onDelete && (
           <Button
-            variant="danger"
+            variant="default"
             size="sm"
             onClick={() => onDelete(asset)}
           >
