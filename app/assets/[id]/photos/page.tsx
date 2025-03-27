@@ -32,7 +32,7 @@ async function getAsset(id: string) {
     return null;
   }
 
-  return asset as AssetWithPhotos;
+  return asset as unknown as AssetWithPhotos;
 }
 
 type Props = {
