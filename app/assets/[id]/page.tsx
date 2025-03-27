@@ -34,11 +34,12 @@ async function getAsset(id: string): Promise<AssetWithPhotos | null> {
 }
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export default async function AssetPage({ params }: Props) {
-  const asset = await getAsset(params.id);
+  const resolvedParams = await params;
+  const asset = await getAsset(resolvedParams.id);
   if (!asset) notFound();
 
   const primaryPhoto = asset.photos?.find((p) => p.is_primary) || asset.photos?.[0];
