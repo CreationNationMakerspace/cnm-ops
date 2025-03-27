@@ -52,7 +52,6 @@ export default function NewAssetPage() {
 
     const { data: insertData, error } = await supabase
       .from('assets')
-      // @ts-expect-error - Supabase's type system doesn't correctly infer the insert type for assets
       .insert(assetData)
       .select()
       .single();
@@ -62,8 +61,7 @@ export default function NewAssetPage() {
       throw new Error('Failed to create asset');
     }
 
-    // @ts-expect-error - Supabase's type system doesn't correctly infer the response type
-    const assetId = insertData.id;
+    const assetId = (insertData as Asset).id;
 
     // Handle photo uploads
     const photos = formData.getAll('photos') as File[];
@@ -111,8 +109,7 @@ export default function NewAssetPage() {
 
       const { error: photoError } = await supabase
         .from('asset_photos')
-        // @ts-expect-error - Supabase's type system doesn't correctly infer the insert type for asset_photos
-        .insert(photoData)
+        .insert(photoData as unknown as NewAssetPhoto)
         .select()
         .single();
 
